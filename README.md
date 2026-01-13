@@ -98,7 +98,8 @@ jobs:
     secrets: inherit
     with:
       dotnet: '8.0.x'                        # Optional .NET version
-      lint: false                            # Disable linting
+      lint: false                            # Disable linting (default = true)
+      lint-auto-fix: true                    # The linter will commit changes to your PR (default = false)
       codecov: false                         # Skip Codecov upload
       test-filter: 'Category!=Integration'   # Filter expression for dotnet test
       private: true                          # Enables private repo logic
