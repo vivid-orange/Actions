@@ -22,6 +22,9 @@ on:
       private:
         type: boolean
         default: false
+      lint-auto-fix:
+        type: boolean
+        default: false
         
 jobs:
   build-test:
@@ -33,6 +36,7 @@ jobs:
       dotnet: ${{ inputs.dotnet }}
       test-filter: ${{ inputs.test-filter }}
       add-private-nuget: ${{ inputs.private }}
+      lint-auto-fix: ${{ inputs.lint-auto-fix }}
       
   codecov-upload:
     needs: build-test
