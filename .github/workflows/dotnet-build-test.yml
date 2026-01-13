@@ -16,6 +16,9 @@ on:
       add-private-nuget:
         type: boolean
         default: false
+      lint-auto-fix:
+        type: boolean
+        default: false
 
 jobs:
   Build-Test:
@@ -55,7 +58,7 @@ jobs:
         id: lint-check
         uses: wearerequired/lint-action@v2
         with:
-          auto_fix: false
+          auto_fix: ${{ inputs.lint-auto-fix }}
           dotnet_format: true
           check_name: "Lint using ${linter}"
           github_token: ${{ secrets.GITHUB_TOKEN }}
