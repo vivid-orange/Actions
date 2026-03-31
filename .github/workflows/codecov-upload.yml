@@ -21,17 +21,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Download coverage artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ${{ inputs.coverage-name }}
           path: ${{ inputs.coverage-dir }}
 
       - name: Upload to codecov.io
         if: ${{ !inputs.private-repo }} 
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           directory: ${{ inputs.coverage-dir }}
           fail_ci_if_error: true
@@ -39,7 +39,7 @@ jobs:
 
       - name: Join Coverage Reports
         if: ${{ inputs.private-repo }} 
-        uses: danielpalme/ReportGenerator-GitHub-Action@5.3.9
+        uses: danielpalme/ReportGenerator-GitHub-Action@5
         with:
           reports: coverage/*/coverage.cobertura.xml
           targetdir: CodeCoverage
@@ -56,7 +56,7 @@ jobs:
 
       - name: Add Coverage PR Comment
         if: ${{ inputs.private-repo }} 
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v3
         with:
           recreate: true
           path: code-coverage-results.md

@@ -29,12 +29,12 @@ jobs:
       
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         if: ${{ inputs.dotnet != '' }}
         with:
           dotnet-version: ${{ inputs.dotnet }}
@@ -88,7 +88,7 @@ jobs:
             ${{ inputs.test-filter && format('--filter "{0}"', inputs.test-filter) || '' }}
 
       - name: Upload coverage artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage
           path: coverage
@@ -103,7 +103,7 @@ jobs:
         
       - name: Upload package artifact
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: package
           path: |
