@@ -42,13 +42,21 @@ jobs:
       - name: Add private NuGet feeds
         if: ${{ inputs.add-private-nuget }}
         run: |
-          dotnet nuget remove source devexpress 2>/dev/null || true
+          remove_source_by_url() {
+            local pattern="$1"
+            dotnet nuget list source --format short 2>/dev/null | grep -F "$pattern" | sed 's/.*\[//;s/\]//' | while read -r name; do
+              dotnet nuget remove source "$name" 2>/dev/null || true
+            done
+          }
+
+          remove_source_by_url "nuget.devexpress.com"
           dotnet nuget add source https://nuget.devexpress.com/${{ secrets.DEVEXPRESS_NUGET_FEED }}/api/v3/index.json \
           -n devexpress \
           -u DevExpress \
           -p ${{ secrets.DEVEXPRESS_NUGET_TOKEN }} \
           --store-password-in-clear-text
-          dotnet nuget remove source ww 2>/dev/null || true
+
+          remove_source_by_url "${{ vars.AZURE_ARTIFACTS_FEED_URL }}"
           dotnet nuget add source ${{ vars.AZURE_ARTIFACTS_FEED_URL }} \
           -n ww \
           -u ${{ vars.AZURE_ARTIFACTS_FEED_USER }} \
