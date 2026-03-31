@@ -44,8 +44,8 @@ jobs:
         run: |
           remove_source_by_url() {
             local pattern="$1"
-            dotnet nuget list source --format short 2>/dev/null | grep -F "$pattern" | sed 's/.*\[//;s/\]//' | while read -r name; do
-              dotnet nuget remove source "$name" 2>/dev/null || true
+            dotnet nuget list source 2>/dev/null | grep -B1 -F "$pattern" | head -1 | sed 's/^ *[0-9]*\. *//;s/ \[.*//' | while read -r name; do
+              [ -n "$name" ] && dotnet nuget remove source "$name" 2>/dev/null || true
             done
           }
 
